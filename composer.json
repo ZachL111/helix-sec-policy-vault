@@ -1,0 +1,10 @@
+{
+  "name": "zachl111/helix-sec-policy-vault",
+  "description": "Implement a PHP security tooling project for policy stream reduction, using windowed input fixtures and late-data behavior checks.",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Portfolio\\": "src/"
+    }
+  }
+}
