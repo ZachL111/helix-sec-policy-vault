@@ -1,68 +1,40 @@
 # helix-sec-policy-vault
 
-`helix-sec-policy-vault` treats security tooling as a local verification problem. The PHP implementation is intentionally narrow, but the fixtures and notes make the behavior explicit.
+`helix-sec-policy-vault` is a compact PHP repository for security tooling, centered on this goal: Implement a PHP security tooling project for policy stream reduction, using windowed input fixtures and late-data behavior checks.
 
-## Helix Sec Policy Vault Checkpoints
+## Use Case
 
-Treat the compact fixture as the contract and the extended examples as a scratchpad. The code should stay boring enough that a change in behavior is obvious from the test output.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## Architecture Notes
+## Helix Sec Policy Vault Review Notes
 
-The core is a scoring model over demand, capacity, latency, risk, and weight. That keeps trust boundaries, policy checks, and replay guards in one explicit decision path. The threshold is 179, with risk penalty 6, latency penalty 4, and weight bonus 3. The PHP implementation uses strict types and a small namespaced policy class.
+The first comparison I would make is `policy width` against `claim drift` because it shows where the rule is most opinionated.
 
-## What This Is For
+## Highlights
 
-I use this kind of project to make a rule visible before adding more machinery around it. The important part here is not the size of the codebase. It is that the input signals, scoring rule, fixture data, and expected output can all be checked in one sitting.
+- `fixtures/domain_review.csv` adds cases for trust boundary and claim drift.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/helix-sec-policy-walkthrough.md` walks through the case spread.
+- The PHP code includes a review path for `policy width` and `claim drift`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Useful Pieces
+## Code Layout
 
-- Uses fixture data to keep policy checks changes visible in code review.
-- Includes extended examples for replay guards, including `recovery` and `degraded`.
-- Documents claim validation tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
+The repository has two validation layers: the original compact policy fixture and the domain review fixture. They are separate so one can change without hiding failures in the other.
 
-## Case Study
+The added PHP path is deliberately direct, with fixtures doing most of the explaining.
 
-The examples are meant to be readable before they are exhaustive. They cover enough variation to show how latency and risk can pull a decision below the threshold.
-
-## Project Layout
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Tooling
-
-Install PHP and run the commands from the repository root. The project does not need credentials or a hosted service.
-
-## Local Workflow
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
 
-## Quality Gate
+The same command runs the local verification path. The highest-scoring domain case is `recovery` at 181, which lands in `ship`. The most cautious case is `stress` at 136, which lands in `watch`.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
+## Future Work
 
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Scope
-
-This code is local-first. It makes no claim about deployed usage and avoids credentials, hosted state, and environment-specific setup.
-
-## Expansion Ideas
-
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add a comparison mode that shows how decisions change when one signal is adjusted.
-- Add one more security tooling fixture that focuses on a malformed or borderline input.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.

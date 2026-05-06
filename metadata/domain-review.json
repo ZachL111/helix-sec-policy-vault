@@ -1,0 +1,73 @@
+{
+  "repo": "helix-sec-policy-vault",
+  "language": "PHP",
+  "category": "Security tooling",
+  "goal": "Implement a PHP security tooling project for policy stream reduction, using windowed input fixtures and late-data behavior checks.",
+  "review_model": {
+    "terms": [
+      "trust boundary",
+      "claim drift",
+      "replay exposure",
+      "policy width"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "trust boundary",
+      "signal": 46,
+      "slack": 37,
+      "drag": 16,
+      "confidence": 77,
+      "score": 158,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "claim drift",
+      "signal": 64,
+      "slack": 21,
+      "drag": 22,
+      "confidence": 53,
+      "score": 136,
+      "lane": "watch"
+    },
+    {
+      "name": "edge",
+      "focus": "replay exposure",
+      "signal": 48,
+      "slack": 31,
+      "drag": 10,
+      "confidence": 47,
+      "score": 144,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "policy width",
+      "signal": 80,
+      "slack": 20,
+      "drag": 23,
+      "confidence": 70,
+      "score": 181,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "trust boundary",
+      "signal": 61,
+      "slack": 26,
+      "drag": 28,
+      "confidence": 76,
+      "score": 140,
+      "lane": "ship"
+    }
+  ]
+}
