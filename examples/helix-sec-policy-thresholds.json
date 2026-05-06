@@ -1,0 +1,17 @@
+{
+  "repo": "helix-sec-policy-vault",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 2,
+    "drag": 2,
+    "ship": 191,
+    "watch": 105
+  },
+  "terms": [
+    "trust boundary",
+    "claim drift",
+    "replay exposure",
+    "policy width"
+  ]
+}
